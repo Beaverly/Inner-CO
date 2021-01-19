@@ -1,3 +1,2 @@
 # Inner-CO
-Skincare business website by FSKPM 
-test
+Skincare business website by FSKPM
