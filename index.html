@@ -84,7 +84,40 @@
   </section><!-- End Hero -->
 
   <main id="main">
+    <!--=====Search section=====-->
+    <section id="Search">
+    
+    <div class="bg-basic">
+      <div class="container">
+        <div class="row mt-4">
+          <div class="col-md-10 mx-auto bg-warning rounded p-4">
+            <h5 class="text-center font-weight-bold">Product's Keyword Search</h5>
+            <hr class="my-1">
+            
+            <form action="Product.php" method="post" class="p-5">
+              <div class="input-group">
+                <input type="text" name="search" id="search" class="form-control form-control-lg rounded-0 border-info" placeholder="Search..." autocomplete="off" required>
+                <div class="input-group-append">
+                  <input type="submit" name="submit" value="Enter" class="btn btn-secondary btn-lg rounded-0">
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-5" style="position: relative;margin-top: -38px;margin-left: 215px;">
+            <div class="list-group" id="show-list">
+              <!-- Here autocomplete list will be display -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="script.js"></script>
+    </div>
 
+  
+  </section>
+
+  
     <!-- ======= About Section ======= -->
     <section id="about" class="about">
       <div class="container">
