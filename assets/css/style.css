@@ -1073,9 +1073,11 @@ section {
 .team .member {
   text-align: center;
   margin-bottom: 20px;
-  background: #343a40;
+  background: #0e0c0d;
   position: relative;
   overflow: hidden;
+  height: 380px;
+  object-fit: cover;
 }
 
 .team .member .member-info {
