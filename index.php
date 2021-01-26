@@ -1,3 +1,15 @@
+<?php
+require_once "php/config.php";
+session_start();
+
+if(isset($_SESSION['user'])){
+  $email = $_SESSION['user'];
+  $sql = "SELECT * FROM users WHERE user_email = '$email'";
+  $result = mysqli_query($link, $sql);
+  $data = mysqli_fetch_array($result,MYSQLI_ASSOC);
+  $user_rank = $data['user_rank'];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,6 +38,7 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
   <!-- =======================================================
   * Template Name: Maxim - v2.3.0
@@ -33,6 +46,68 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+  <style>
+    .search-input input{
+      height: 55px;
+      width: 100%;
+      outline: none;
+      border: none;
+      border-radius: 5px;
+      padding: 0 60px 0 20px;
+      font-size: 18px;
+      box-shadow: 0px 1px 5px rgba(0,0,0,0.1);
+    }
+
+    .search-input.active input{
+      border-radius: 5px 5px 0 0;
+    }
+
+    .search-input .autocom-box{
+      padding: 0;
+      opacity: 0;
+      pointer-events: none;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+
+    .search-input.active .autocom-box{
+      padding: 10px 8px;
+      opacity: 1;
+      pointer-events: auto;
+      background: #fff;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+
+    .autocom-box li{
+      list-style: none;
+      padding: 8px 12px;
+      display: block;
+      width: 100%;
+      cursor: default;
+      border-radius: 3px;
+    }
+
+    .search-input.active .autocom-box li{
+      display: block;
+    }
+    .autocom-box li:hover{
+      background: #efefef;
+    }
+
+    .search-input .icon{
+      position: absolute;
+      right: 25px;
+      top: 60px;
+      height: 55px;
+      width: 55px;
+      text-align: center;
+      line-height: 55px;
+      font-size: 20px;
+      color: #ffc107;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
@@ -42,29 +117,32 @@
     <div class="container d-flex">
 
       <div class="logo mr-auto">
-        <h1 class="text-light"><a href="index.html">Inner-CO.</a></h1>
+        <h1 class="text-light"><a href="index.php">Inner-CO.</a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
-        <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+        <!-- <a href="index.php"><img src="assets/img/logo.jpg" alt="" class="img-fluid"></a> -->
       </div>
 
       <nav class="nav-menu d-none d-lg-block">
         <ul>
-          <li class="active"><a href="index.html"><i class="icofont-home"></i>Home</a></li>
-          <li><a href="Product.html"><i class="icofont-shopping-cart"></i>Product</a></li>
-          <li><a href="FAQ.html"><i class="icofont-support-faq"></i>FAQ</a></li>
-          <li><a href="Aboutus.html"><i class="icofont-company"></i>About Us</a></li>
-          <li><a href="Contactus.html"><i class="icofont-ui-contact-list"></i>Contact us</a></li>
-          <li class="drop-down"><a href="Mycart.html"><i class="icofont-wallet"></i></i>My cart</a>
-            <ul>
-              <li><a href="#Purchase"></i>Purchase</a></li>
-              <li><a href="#Checkout">Check Out</a></li>
-            </ul> 
-          </li>
-          <li class="drop-down"><a href="Myaccount.html"><i class="icofont-user-alt-4"></i>My account</a>
+          <li class="active"><a href="index.php"><i class="icofont-home"></i>Home</a></li>
+          <li><a href="Product.php"><i class="icofont-shopping-cart"></i>Product</a></li>
+          <li><a href="FAQ.php"><i class="icofont-support-faq"></i>FAQ</a></li>
+          <li><a href="Aboutus.php"><i class="icofont-company"></i>About Us</a></li>
+          <li><a href="Contactus.php"><i class="icofont-ui-contact-list"></i>Contact us</a></li>
+          <li><a href="Mycart.php"><i class="icofont-wallet"></i></i>My cart</a></li>
+          <li class="drop-down"><a href="Myaccount.php"><i class="icofont-user-alt-4"></i>My account</a>
              <ul>
-                <li><a href="#Create Account">Create Account</a></li>
-                <li><a href="#Sign In">Sign In</a></li>
-                <li><a href="#Sign Out">Sign Out</a></li>
+                <?php if (isset($_SESSION['user'])){?>
+                  <li><a href="Myaccount.php?logout">Sign Out</a></li>
+                  <?php if($user_rank > 1){?>
+                  <li><a href="sales.php">Sales Report</a></li>
+                  <?php
+                    }
+                  }
+                  else{?>
+                  <li><a href="Myaccount.php?form=register">Create Account</a></li>
+                  <li><a href="Myaccount.php">Sign In</a></li>
+                  <?php }?>
               </ul>
           </li>
         </ul>
@@ -93,25 +171,18 @@
           <div class="col-md-10 mx-auto bg-warning rounded p-4">
             <h5 class="text-center font-weight-bold">Product's Keyword Search</h5>
             <hr class="my-1">
-            
-            <form action="Product.php" method="post" class="p-5">
-              <div class="input-group">
-                <input type="text" name="search" id="search" class="form-control form-control-lg rounded-0 border-info" placeholder="Search..." autocomplete="off" required>
-                <div class="input-group-append">
-                  <input type="submit" name="submit" value="Enter" class="btn btn-secondary btn-lg rounded-0">
-                </div>
+            <div class="search-input" id="search"> <!--active-->
+              <a href="" target="_blank" hidden></a>
+              <input type="text" id="search-box" onkeyup="showMe(this)" placeholder="Type to search.." autocomplete="off">
+              <div class="autocom-box" id="show-list">
+                <!-- <li><a href="#">test</a></li> -->
+                <!-- here list are inserted from javascript -->
               </div>
-            </form>
-          </div>
-          <div class="col-md-5" style="position: relative;margin-top: -38px;margin-left: 215px;">
-            <div class="list-group" id="show-list">
-              <!-- Here autocomplete list will be display -->
+              <div class="icon"><i class="fas fa-search"></i></div>
             </div>
           </div>
         </div>
       </div>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-      <script src="script.js"></script>
     </div>
 
   
@@ -248,22 +319,22 @@
           <div class="col-lg-2 col-md-6 footer-links">
             <h4>Useful Links</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="index.html">Home</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="Product.html">Product</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="FAQ.html">FAQ</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="Aboutus.html">About Us</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="ContactUs.html">Contact Us</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="Mycart.html">My Cart</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="Myaccount.html">My Account</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Home</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="Product.php">Product</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="FAQ.php">FAQ</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="Aboutus.php">About Us</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="ContactUs.php">Contact Us</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="Mycart.php">My Cart</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="Myaccount.php">My Account</a></li>
             </ul>
           </div>
 
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Our Services</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="ContactUs.html">Skincare Consultant</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="ContactUs.html">Product recomendation</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="FAQ.html">Help and Inquires</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="ContactUs.php">Skincare Consultant</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="ContactUs.php">Product recomendation</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="FAQ.php">Help and Inquires</a></li>
 
             </ul>
           </div>
@@ -271,11 +342,11 @@
           <div class="col-lg-3 col-md-6 footer-links">
             <h4><i class="icofont-web"></i></i>Link to individual website</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="Aboutus.html">Beaverly(65536)</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="Aboutus.html">Ezzaty(65933)</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="Aboutus.html">Hidayah(66119)</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="Aboutus.html">Nadhirah(67186)</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="Aboutus.html">Amir(68440)</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="https://beaverly.github.io/">Beaverly(65536)</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="Aboutus.php">Ezzaty(65933)</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="https://hidayahzain.github.io/">Hidayah(66119)</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="https://nurnadhirah67186.github.io/nadhirah.github.io/">Nadhirah(67186)</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="Aboutus.php">Amir(68440)</a></li>
 
             </ul>
           </div>
@@ -313,6 +384,30 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <script>
+    function showMe(e) {
+      var element = document.getElementById("search");
+      let searchText = e.value;
+      if (searchText != "") {
+        $.ajax({
+          url: "search.php",
+          method: "post",
+          data: {
+            query: searchText,
+          },
+          success: function (response) {
+            element.classList.add("active");
+            $("#show-list").php(response);
+          },
+        });
+      }
+      else{
+        element.classList.remove("active");
+        $("#show-list").php("");
+      }
+    }
+  </script>
 
 </body>
 

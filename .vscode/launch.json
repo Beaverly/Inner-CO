@@ -34,8 +34,8 @@
         {
             "type": "pwa-chrome",
             "request": "launch",
-            "name": "Open Product.html",
-            "file": "c:\\Users\\User\\Documents\\GitHub\\Inner-CO\\Product.html"
+            "name": "Open Product.php",
+            "file": "c:\\Users\\User\\Documents\\GitHub\\Inner-CO\\Product.php"
         }
     ]
 }
