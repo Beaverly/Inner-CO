@@ -8,8 +8,8 @@
 
 	$row = mysqli_fetch_array($check,MYSQLI_ASSOC);
 
-	$login_session = $row['email'];
-	$user_id = $row['id'];
+	$login_session = $row['user_email'];
+	$user_id = $row['user_id'];
 	$ip = "";
 
 	if (!empty($_SERVER["HTTP_CLIENT_IP"]))
@@ -28,7 +28,7 @@
 	}
 
 	if(!isset($_SESSION['user'])){
-	  header("location:".ROOTDIR."/account");
+	  header("location:Myaccount.php");
 	  die();
 	}
 	
